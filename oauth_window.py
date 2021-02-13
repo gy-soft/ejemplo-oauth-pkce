@@ -18,7 +18,7 @@ class OauthWindow(Gtk.Window):
     Gtk.Window.__init__(self, title="OAuth authenticator")
 
     self.code_verifier = ""
-    self.token = "A3VpxU4SttgAAAAAAAAAAUSOSPNhsYpSnQujjJAjXdj_E5L2kV6kWiWQFfU9g0xv"
+    self.token = ""
     self.crypto_helper = CryptoHelper()
 
     builder = Gtk.Builder()
