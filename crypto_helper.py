@@ -7,7 +7,7 @@ class CryptoHelper():
   def __init__(self):
     self.rnd = StrongRandom()
 
-  def get_code(self):
+  def generate_verifier_code(self):
     mapped = map(lambda x: self.rnd.getrandbits(8), range(32))
     encoded = b64encode(bytes(mapped))
     verifier = encoded.decode().replace("=", "")

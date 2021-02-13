@@ -24,23 +24,23 @@ class OauthWindow(Gtk.Window):
     builder = Gtk.Builder()
     builder.add_from_file("./main.glade")
     container = builder.get_object("container")
-    btn_getcode = builder.get_object("btn_get_code")
-    btn_getcode.connect("clicked", self.grant_app)
-    btn_auth = builder.get_object("btn_auth")
-    btn_auth.connect("clicked", self.authenticate)
-    btn_test = builder.get_object("btn_test")
-    btn_test.connect("clicked", self.call_api)
+    btn_grantapp = builder.get_object("btn_grantapp")
+    btn_grantapp.connect("clicked", self.grant_app)
+    btn_gettoken = builder.get_object("btn_gettoken")
+    btn_gettoken.connect("clicked", self.generate_token)
+    btn_callapi = builder.get_object("btn_callapi")
+    btn_callapi.connect("clicked", self.call_api)
     self.txt_authcode = builder.get_object("txt_auth_code")
     self.txt_response = builder.get_object("txt_response")
     self.add(container)
 
   def grant_app(self, widget):
-    code = self.crypto_helper.get_code()
+    code = self.crypto_helper.generate_verifier_code()
     self.code_verifier = code["verifier"]
     auth_url = OAUTH_URL.format(OAUTH_HOST, CLIENT_ID, code["challenge"])
     open_browser(auth_url)
 
-  def authenticate(self, widget):
+  def generate_token(self, widget):
     oauth_code = self.txt_authcode.get_text()
     params = {
       "client_id": CLIENT_ID,
@@ -51,7 +51,6 @@ class OauthWindow(Gtk.Window):
     response = requests.post(TOKEN_HOST, params)
     json = response.json()
     self.token = json["access_token"]
-    print(json)
 
   def call_api(self, widget):
     json = {
